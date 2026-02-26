@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucas Santiago — Designer & Editor de Vídeos</title>
+
+  <link rel="preload" as="image" href="./img/Documento.webp">
+
+  <link rel="stylesheet" href="https://use.typekit.net/rzg4dnn.css">
+  <link rel="stylesheet" href="https://use.typekit.net/gaf0lzl.css">
+  <link rel="stylesheet" href="https://use.typekit.net/bom8kus.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #FAF0E0;
+      --beige:   #CFB28C;
+      --orange:  #FBC580;
+      --brown:   #633C30;
+      --brown-light: #9e6a57;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      background: var(--cream);
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* ── VÍDEOS ── */
+    .meu-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    /* ── VÍDEO VERTICAL (REELS/TIKTOK) ── */
+    .vid-card.vid-vertical {
+      aspect-ratio: 9/16; /* Inverte o formato para vertical */
+      max-width: 320px; /* Limita a largura para não ficar um gigante na tela do PC */
+      margin: 0 auto; /* Centraliza ele direitinho na coluna */
+    }
+
+    .vid-sound-btn, .vid-card-title {
+      z-index: 2;
+    }
+
+    /* ── ACELERAÇÃO DE HARDWARE (GPU) ── */
+/* Aplicamos apenas nas camadas de fundo para não pesar os elementos interativos */
+.pattern-orange::before, 
+.pattern-beige, 
+.cta-contact-wrapper::before {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ── PATTERNS DE FUNDO ── */
+
+/* TOPO (Hero) */
+.pattern-orange {
+  position: relative;
+  background-color: var(--orange); /* Cor sólida carrega instantaneamente */
+}
+
+/* Criamos uma camada só para a imagem do topo */
+.pattern-orange::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("./img/Documento_11zon.webp");
+  background-size: cover;
+  background-position: center;
+  z-index: 0; /* Fica atrás de tudo */
+  pointer-events: none;
+  opacity: 0.30;
+}
+
+/* PROJETOS (Meio) */
+.pattern-beige {
+  background-color: var(--beige);
+  background-image: url("./img/Documento2.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+   /* ── NAV (Estrutura principal) ── */
+    nav {
+      position: fixed; 
+      top: 0; left: 0; right: 0;
+      z-index: 999; 
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      transition: all 0.3s ease;
+      /* O fundo e o blur saíram daqui e foram para a camada abaixo! */
+    }
+
+    /* ── A CAMADA DO VIDRO (Fica atrás dos botões) ── */
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0; /* Preenche exatamente o tamanho da barra nav */
+      z-index: -1; /* Joga a textura de vidro para trás dos textos/botões */
+      pointer-events: none; /* Garante que o vidro não bloqueie os cliques do mouse */
+      
+      /* O Gradiente, Blur e Máscara vêm todos para cá: */
+      background: linear-gradient(to bottom, rgba(250, 240, 224, 0.4) 0%, rgba(250, 240, 224, 0) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      -webkit-mask-image: linear-gradient(black 70%, transparent);
+      mask-image: linear-gradient(black 70%, transparent);
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: top center;
+      mask-position: top center;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-icon {
+      width: 32px; height: 32px;
+      border: 2px solid var(--brown);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      color: var(--brown);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-icon:hover { background: var(--brown); color: var(--orange); }
+    .nav-icon svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* ── AJUSTE DO MENU MAIS ── */
+    .nav-mais {
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--brown);
+      display: flex; 
+      align-items: center; 
+      gap: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      position: relative; /* Importante para a caixinha alinhar nele */
+      padding: 10px 0; /* Aumenta a área de contato para não fechar fácil */
+    }
+
+    .nav-mais .arrow { font-size: 10px; transition: transform 0.2s; }
+    
+    /* GATILHO: Quando encosta no MAIS, mostra o DROPDOWN */
+    .nav-mais:hover .dropdown { 
+      display: block !important; 
+    }
+    
+    .nav-mais:hover .arrow { transform: rotate(180deg); }
+
+    /* A CAIXINHA DO MENU */
+    .dropdown {
+      display: none; /* Escondido por padrão */
+      position: absolute;
+      top: 100%; 
+      left: 0;
+      background: var(--brown); /* Marrom da Lups Design */
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 160px;
+      z-index: 2000;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* FORMATANDO OS LINKS DENTRO DO MENU */
+    .dropdown a {
+      display: block !important; /* UM EMBAIXO DO OUTRO */
+      padding: 12px 20px !important;
+      color: var(--cream) !important; /* Cor clara */
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700 !important;
+      font-size: 13px !important;
+      letter-spacing: 1px;
+      text-decoration: none !important; /* MATA O AZUL E O SUBSCRITO */
+      transition: background 0.2s;
+      text-align: left;
+    }
+
+    .dropdown a:hover { 
+      background: rgba(255,255,255,0.1) !important; 
+    }
+
+    /* Links que só aparecem no celular */
+    .dropdown a.mobile-only-link { 
+  display: none !important; 
+}
+
+@media (max-width: 900px) {
+  /* No mobile (abaixo de 900px), eles voltam a aparecer */
+  .dropdown a.mobile-only-link { 
+    display: block !important; 
+  }
+  
+  /* Esconde os ícones e textos soltos do topo no mobile */
+  .desktop-only-icon, 
+  .desktop-only-text { 
+    display: none !important; 
+  }
+}
+
+    /* ── LOGO ── */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+    }
+
+    .nav-right a {
+      font-family: "filson-pro", sans-serif; 
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--brown);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .nav-right a:hover { opacity: 0.7; }
+    
+    .nav-right .nav-icon.behance { font-size: 15px; font-family: 'Oswald', sans-serif; font-weight: 700; text-decoration: none; }
+    .nav-right .nav-icon.linkedin { font-size: 13px; font-family: 'Oswald', sans-serif; font-weight: 700; text-decoration: none; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    #heroCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      cursor: crosshair;
+      z-index: 2;
+    }
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      z-index: 3;
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .hero-sub {
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      font-size: clamp(13px, 2vw, 16px);
+      font-style: italic;
+      color: var(--brown);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .hero-title {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(52px, 11vw, 130px);
+      color: var(--brown);
+      line-height: 0.95;
+      letter-spacing: 2px;
+    }
+
+    .hero-title span { display: block; }
+
+    .hero-hint {
+      margin-top: 20px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--brown);
+      opacity: 0.5;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    #clearBtn {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10;
+      background: var(--brown);
+      color: var(--orange);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    #clearBtn:hover { opacity: 0.8; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--brown);
+      padding: 16px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 25s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee-track span {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--cream);
+      letter-spacing: 3px;
+      padding: 0 30px;
+    }
+
+    .marquee-track span.dot {
+      color: var(--orange);
+      padding: 0 8px;
+      font-size: 24px;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--cream);
+      padding: 100px 40px;
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-left {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      min-height: 500px;
+    }
+
+    .about-mascot-bg {
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: "anchor-web", sans-serif;
+      font-size: 200px;
+      color: rgba(99,60,48,0.08);
+      line-height: 1;
+      pointer-events: none;
+      letter-spacing: -5px;
+      user-select: none;
+    }
+
+    .photo-placeholder {
+      position: relative;
+      z-index: 1;
+      width: 500px;
+      max-width: 100%;
+      height: auto; 
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .photo-placeholder img {
+      width: 100%; 
+      height: auto; 
+      z-index: 1; 
+      display: block;
+    }
+
+    .photo-placeholder::before {
+      display: none;
+    }
+
+    .photo-label {
+    position: absolute;
+    bottom: 20px;
+    left: 63%; /* Alterado de 63% para 50% */
+    transform: translateX(-50%); /* Isso garante que o MEIO da etiqueta alinhe com o MEIO da foto */
+    background: var(--brown);
+    color: var(--orange);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: "filson-pro", sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 2px;
+    z-index: 2;
+  }
+
+    .about-right h2 {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(48px, 6vw, 72px);
+      color: var(--brown);
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+      line-height: 1;
+    }
+
+    .about-right h2 span {
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--orange);
+      border-radius: 2px;
+      margin-top: 10px;
+    }
+
+    .about-right p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--brown);
+      margin-bottom: 18px;
+      opacity: 0.85;
+    }
+
+    .btn-mais {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--orange);
+      color: var(--brown);
+      padding: 14px 36px;
+      border-radius: 40px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-mais:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(99,60,48,0.2);
+    }
+
+    /* ── PROJECTS ── */
+    #projects {
+      padding: 100px 40px;
+    }
+
+    .projects-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--brown);
+      opacity: 0.6;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(36px, 5vw, 56px);
+      color: var(--brown);
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      line-height: 1;
+    }
+
+    .section-title span { color: var(--cream); }
+
+    /* Social Media Grid */
+    .sm-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .sm-card {
+      aspect-ratio: 4/5;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+      background: #111;
+    }
+
+    .sm-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .sm-card:hover { transform: translateY(-8px) scale(1.02); }
+    .sm-card:hover img { transform: scale(1.05); }
+
+    /* Video Grid */
+    .vid-grid {
+      display: grid;
+      /* A mágica acontece aqui: a 1ª coluna pega espaço maior (2.5) e a 2ª pega menos (1) */
+      grid-template-columns: 2.5fr 1fr; 
+      gap: 30px;
+      align-items: center; /* Deixa os dois centralizados na mesma linha */
+    }
+
+    .vid-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: #111;
+      position: relative;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Classe específica para o vídeo deitado */
+    .vid-horizontal {
+      aspect-ratio: 16/9;
+    }
+
+    /* Classe específica para o vídeo em pé */
+    .vid-vertical {
+      aspect-ratio: 9/16;
+      max-width: 320px; 
+      margin: 0 auto;
+    }
+
+    .vid-card-inner {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vid-card:nth-child(1) .vid-card-inner {
+      background: linear-gradient(160deg, #0a0a0a 0%, #1c1c1c 50%, #2d1500 100%);
+    }
+
+    .vid-card:nth-child(2) .vid-card-inner {
+      background: linear-gradient(160deg, #000d1a 0%, #001a33 50%, #003d6b 100%);
+    }
+
+    .vid-sound-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+
+    .vid-sound-btn:hover { background: rgba(255,255,255,0.25); }
+
+    .vid-play {
+      width: 60px; height: 60px;
+      background: rgba(251,197,128,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+
+    .vid-card:hover .vid-play { transform: scale(1.1); }
+    .vid-play svg { width: 22px; height: 22px; fill: var(--brown); margin-left: 3px; }
+
+    .vid-card-title {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+    }
+
+    /* ── ENVELOPE QUE JUNTA AS DUAS SEÇÕES ── */
+    .cta-contact-wrapper {
+      position: relative;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    .cta-contact-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("./img/Documento3.webp"); 
+      background-size: 100% auto; /* Ajustado para não dar zoom excessivo na imagem */
+      background-position: top center;
+      background-repeat: repeat;
+      opacity: 0.15; 
+      pointer-events: none;
+      z-index: 0; 
+    }
+
+    /* ── CTA ── */
+    #cta {
+      background: transparent; /* Tem que ser transparente para a textura aparecer! */
+      padding: 120px 40px;
+      text-align: center;
+      position: relative; /* Adicione isso */
+      z-index: 1; /* Adicione isso */
+    }
+
+    #cta h2 {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(48px, 8vw, 96px);
+      color: var(--brown);
+      letter-spacing: 3px;
+      margin-bottom: 30px;
+      line-height: 1;
+    }
+
+    #cta p {
+      max-width: 640px;
+      margin: 0 auto 40px;
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--brown);
+      opacity: 0.75;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      padding: 16px 48px;
+      border-radius: 50px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--brown);
+      border: 3px solid var(--orange);
+      outline: 3px solid var(--orange);
+      outline-offset: 4px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .btn-cta:hover {
+      background: var(--orange);
+      transform: translateY(-3px);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: transparent; /* ← TRANSPARENTE AQUI TAMBÉM */
+      padding: 0px 40px 60px; /* Reduzi o padding do topo para grudar melhor no CTA */
+      position: relative;
+      z-index: 1; 
+    }
+    
+    .contact-inner {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      z-index: 1;
+    }
+
+    #contact h2 {
+      font-family: "anchor-web", sans-serif;
+      font-size: clamp(42px, 7vw, 80px);
+      color: var(--brown);
+      letter-spacing: 3px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .contact-email {
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--brown);
+      opacity: 0.6;
+      letter-spacing: 1px;
+      margin-bottom: 30px;
+      display: block;
+    }
+
+    #contact p.desc {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--brown);
+      opacity: 0.7;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 16px 22px;
+      border: 2px solid rgba(99,60,48,0.2);
+      border-radius: 50px;
+      background: transparent;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--brown);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form textarea {
+      border-radius: 20px;
+      resize: vertical;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { 
+      color: rgba(99,60,48,0.4); 
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus { 
+      border-color: var(--orange); 
+    }
+
+    .btn-send {
+      align-self: center;
+      background: transparent;
+      border: 2px solid var(--orange);
+      color: var(--brown);
+      padding: 14px 48px;
+      border-radius: 50px;
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 8px;
+    }
+
+    .btn-send:hover {
+      background: var(--orange);
+      color: var(--brown);
+    }
+
+    footer {
+  background: var(--orange); /* MUDA O FUNDO PARA LARANJA */
+  padding: 40px 30px; /* Aumentei um pouquinho o padding vertical para ficar mais elegante */
+  text-align: center;
+  /* Removi a borda superior que tinha antes para ficar liso */
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Removi a opacidade para o logo destacar mais no fundo colorido */
+}
+
+.footer-logo img {
+  height: 34px; /* Aumentamos de 24px para 34px para dar mais destaque */
+  width: auto;
+}
+
+.footer-copy {
+  font-size: 13px; 
+  color: var(--brown); /* Garante a cor marrom */
+  margin-top: 16px;
+  letter-spacing: 1px;
+  font-weight: 700; /* Deixa a fonte mais grossa/visível */
+}
+
+    /* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+
+  .photo-placeholder { 
+    width: 100%; 
+    max-width: 400px; 
+    height: auto; 
+    margin: 0 auto;
+    
+    /* O MOVIMENTO VEM PARA CÁ (move a caixa inteira: foto + etiqueta) */
+    transform: translateX(-8%); 
+  }
+
+      nav { padding: 14px 20px; }
+      .nav-logo img { height: 28px !important; }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .about-left { min-height: 300px; }
+      .about-mascot-bg { font-size: 130px; }
+      .about-right h2 span { margin: 10px auto 0; }
+      .sm-grid { grid-template-columns: 1fr; }
+      .vid-grid { grid-template-columns: 1fr; }
+      #about, #projects, #cta, #contact { padding: 70px 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-left .nav-icon:nth-child(3),
+      .nav-left .nav-icon:nth-child(4) { display: none; }
+      .nav-right a:first-child { display: none; }
+      .hero-title { font-size: clamp(44px, 15vw, 70px); }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+.final-bar {
+      width: 100%;
+      height: 30px; /* Altura da barra. Se achar muito grossa, diminua para 20px ou 24px */
+      background: var(--orange); /* Usa a mesma cor laranja dos seus botões */
+    }
+    
+    /* Estilo do botão Ver Mais (Mobile) */
+    #scrollDownBtn {
+      display: none; /* Escondido por padrão no PC */
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+      text-decoration: none;
+      color: var(--brown);
+      font-family: "filson-pro", sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    #scrollDownBtn .arrow-down {
+      font-size: 20px;
+      margin-top: 4px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-5px);}
+      60% {transform: translateY(-3px);}
+    }
+
+    /* Mostrar apenas no celular */
+    @media (max-width: 900px) {
+      #scrollDownBtn { display: flex; flex-direction: column; align-items: center; }
+      /* Dica: aumente o z-index do clearBtn para não ficar em cima do novo botão */
+      #clearBtn { right: 15px; bottom: 15px; padding: 6px 12px; font-size: 10px; }
+    }
+
+    /* ── BOTÃO VOLTAR AO TOPO ── */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 45px;
+      height: 45px;
+      background: var(--brown);
+      color: var(--orange);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 1000;
+      /* Começa escondido */
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(99, 60, 48, 0.3);
+    }
+
+    /* Classe que o JS vai ativar ao scrollar */
+    #backToTop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #backToTop:hover {
+      transform: translateY(-5px);
+      background: var(--brown-light);
+      color: var(--cream);
+    }
+
+    /* Ajuste para mobile para não bater nos botões que já existem */
+    @media (max-width: 900px) {
+      #backToTop {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    /* ── CAIXA LATERAL ESTILO USELESS BOX (Ajustado) ── */
+    #cat-box {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: #633C30; /* Marrom-médio do gato */
+      padding: 18px 12px;
+      border-radius: 12px 0 0 12px;
+      box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000; /* Fica acima do menu nav (z-index: 999) */
+      border: 2px solid #FBC580; /* Cor laranja de destaque */
+      border-right: none;
+    }
+
+    /* ── O INTERRUPTOR (SWITCH) ── */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 28px;
+      height: 56px; /* Interruptor vertical */
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #FAF0E0; /* Cor creme de fundo */
+      transition: .4s;
+      border-radius: 28px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 3px; bottom: 3px;
+      background-color: #633C30; /* Marrom do gato */
+      transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider { background-color: #FBC580; /* Laranja ativado */ }
+    input:checked + .slider:before { transform: translateY(-28px); }
+
+    /* ── CAIXA LATERAL ESTILO USELESS BOX (Ajustado) ── */
+    #cat-box {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: #633C30; /* Marrom-médio do gato */
+      padding: 18px 12px;
+      border-radius: 12px 0 0 12px;
+      box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000; /* Fica acima do menu nav (z-index: 999) */
+      border: 2px solid #FBC580; /* Cor laranja de destaque */
+      border-right: none;
+    }
+
+    /* ── O INTERRUPTOR (SWITCH) ── */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 28px;
+      height: 56px; /* Interruptor vertical */
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #FAF0E0; /* Cor creme de fundo */
+      transition: .4s;
+      border-radius: 28px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 3px; bottom: 3px;
+      background-color: #633C30; /* Marrom do gato */
+      transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider { background-color: #FBC580; /* Laranja ativado */ }
+    input:checked + .slider:before { transform: translateY(-28px); }
+
+    /* ── O "TÚNEL" DA PATINHA (Agora sim, Horizontal!) ── */
+    #cat-house {
+      position: fixed;
+      top: 50%; 
+      right: 0;
+      transform: translateY(-50%);
+      width: 300px; /* Túnel bem largo para caber o movimento todo */
+      height: 250px; /* Altura folgada para não cortar os pelos da pata */
+      overflow: hidden; /* Corta a pata na borda da tela */
+      pointer-events: none; 
+      z-index: 1001; 
+    }
+
+    /* ── A SUA PATINHA OFICIAL ── */
+    #cat-paw {
+      position: absolute; 
+      top: 50%; 
+      right: -250px; /* Começa escondida na DIREITA, fora da tela */
+      transform: translateY(-50%); /* Apenas centraliza a altura, sem girar! */
+      
+      /* 👇👇👇 É AQUI QUE VOCÊ MUDA O TAMANHO 👇👇👇 */
+      width: 120px; 
+      /* 👆👆👆 AUMENTE OU DIMINUA ESSE VALOR (ex: 200px, 220px) 👆👆👆 */
+
+      pointer-events: none;
+      transition: right 0.3s ease-out;
+
+      filter: drop-shadow(-8px 10px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    /* O bote! A pata desliza para a ESQUERDA */
+    #cat-paw.atacar {
+      right: 0px; /* Distância que ela avança por cima do interruptor */
+    }
+
+  </style>
+</head>
+<body>
+
+<section id="hero" class="pattern-orange">
+  <nav>
+  <div class="nav-left">
+    <a class="nav-icon" href="https://x.com/SFLucasss" target="_blank" title="Twitter">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.261 5.634 5.903-5.634zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a class="nav-icon" href="https://www.instagram.com/_lucassfloriani/" target="_blank" title="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    
+    <a class="nav-icon desktop-only-icon" href="https://www.youtube.com/@Lupinhas" target="_blank" title="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M23.499 6.203a3.008 3.008 0 00-2.089-2.089c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.008 3.008 0 00.527 6.203a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.008 3.008 0 002.089 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.008 3.008 0 002.089-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+    </a>
+
+    <div class="nav-mais">
+      MAIS <span class="arrow">▾</span>
+      <div class="dropdown">
+        <a href="#projects">Portfolio</a>
+        <a href="#about">Sobre</a>
+        <a href="https://www.youtube.com/@Lupinhas" target="_blank" class="mobile-only-link">YouTube</a>
+        <a href="#contact" class="mobile-only-link">Contato</a>
+      </div>
+    </div>
+  </div>
+
+  <a href="#" class="nav-logo">
+    <img src="./img/LOGOCOMPLETA.png" alt="Lucas Santiago Logo">
+  </a>
+
+  <div class="nav-right">
+    <a href="#contact" class="desktop-only-text">Contato</a>
+    
+    <a class="nav-icon behance" href="https://www.behance.net/lupsdesign" target="_blank" title="Behance">Bē</a>
+    <a class="nav-icon linkedin" href="https://www.linkedin.com/in/lucas-santiago-floriani-3a144a3b3/" target="_blank" title="LinkedIn">in</a>
+    <a class="nav-icon" href="mailto:contatolsps@gmail.com" title="Email">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+</nav>
+
+  <canvas id="heroCanvas"></canvas>
+
+  <div class="hero-text">
+    <p class="hero-sub">✦ Clique e segure, e crie você também ✦</p>
+    <h1 class="hero-title">
+      <span>COLOCANDO SUA</span>
+      <span>EMPRESA FORA</span>
+      <span>DA CAIXA</span>
+    </h1>
+    <p class="hero-hint">↓ Arraste para desenhar nessa tela ↓</p>
+  </div>
+
+  <button id="clearBtn">✕ LIMPAR</button>
+  <a href="#about" id="scrollDownBtn">
+  <span>VER MAIS</span>
+  <div class="arrow-down">↓</div>
+</a>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+    <span>LUCAS DESIGN</span><span class="dot">◆</span>
+    <span>COLOCANDO SUA EMPRESA FORA DA CAIXA</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-inner">
+    <div class="about-left reveal">
+      <div class="about-mascot-bg"></div>
+      <div class="photo-placeholder">
+        <img src="./img/Eupng.png" alt="Foto Lucas Santiago">
+        <div class="photo-label">LUCAS SANTIAGO</div>
+      </div>
+    </div>
+
+    <div class="about-right reveal" style="transition-delay:0.15s">
+      <h2>QUEM<br>SOU EU?<span></span></h2>
+      <p>Catarinense, curioso de carteirinha, criativo assumido e, segundo dizem, tagarela quando a conversa está boa, Lucas Santiago é designer e editor de vídeos brasileiro, especialista em criar identidades visuais que marcam e conteúdos que fazem rir.</p>
+      <p>No mercado desde 2021, atende qualquer cliente que tenha uma boa ideia para transformar em social media, design gráfico ou vídeos humorísticos. Seu trabalho mistura consistência, originalidade e aquele toque de irreverência que faz cada projeto se destacar.</p>
+      <p>Quando não está mergulhado em pixels e timelines, Lucas vive sonhando alto e pensando em novas formas de transformar ideias em experiências visuais memoráveis, porque criar, para ele, é sempre diversão com propósito.</p>
+      <a href="https://www.instagram.com/_lucassfloriani/" target="_blank" class="btn-mais">UM POUCO MAIS</a>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="pattern-beige">
+  <div class="projects-inner">
+
+    <div class="reveal">
+      <p class="section-label">Portfólio</p>
+      <h2 class="section-title">PROJETOS — <span>SOCIAL MEDIA</span></h2>
+    </div>
+
+    <div class="sm-grid reveal" style="transition-delay:0.1s">
+      <div class="sm-card">
+        <img src="./img/6DiasWorlds.png" alt="Rocket League World Championship - 6 Dias">
+      </div>
+
+      <div class="sm-card">
+        <img src="./img/CronogramaLCQ.png" alt="Cronograma LCQ SAM">
+      </div>
+
+      <div class="sm-card">
+        <img src="./img/YanMVP.png" alt="Yanxnz MVP Sam Open V">
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="section-label">Portfolio</p>
+      <h2 class="section-title">PROJETOS — <span>EDIÇÃO DE VÍDEO</span></h2>
+    </div>
+
+    <div class="vid-grid reveal" style="transition-delay:0.1s">
+      
+      <div class="vid-card vid-horizontal">
+        <div class="vid-card-inner">
+          <video src="./vid/Z6loop.webm" class="meu-video" autoplay loop muted playsinline></video>
+          <p class="vid-card-title">Z6 - PROJETO PRÓPRIO</p>
+        </div>
+      </div>
+
+      <div class="vid-card vid-vertical">
+        <div class="vid-card-inner">
+          <video src="./vid/Aion.webm" class="meu-video" autoplay loop muted playsinline></video>
+          <p class="vid-card-title">AION ASSESSORIA</p>
+        </div>
+      </div>
+      
+    </div>
+  </div> 
+</section> 
+
+<div class="cta-contact-wrapper">
+  <section id="cta">
+    <div class="reveal">
+      <h2>GOSTOU DO<br>QUE VIU?</h2>
+      <p>Se você curtiu o meu trabalho e acredita que posso agregar valor ao seu projeto, negócio ou conteúdo, vai ser um prazer trocar uma ideia com você. Estou pronto para entender seus desafios e transformá-los em soluções visuais criativas, consistentes e que realmente chamam atenção. Cada projeto que assumo recebe atenção total, direção clara e execução caprichada. Clique no botão abaixo e vamos fazer sua empresa sair da caixa!</p>
+      <a href="#contact" class="btn-cta">ENTRE EM CONTATO</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-inner reveal">
+      <h2>BORA FAZER<br>ACONTECER!</h2>
+      <a href="mailto:contato.lups@gmail.com" class="contact-email">contato.lups@gmail.com</a>
+
+      <p class="desc">Se o seu projeto precisa de direção criativa, consistência visual e uma execução de alto nível, estou pronto para conversar. Acredito que resultados de impacto nascem de alinhamento, estratégia e uma visão clara do que se quer construir. Trabalho ao lado de clientes que valorizam identidade, presença e conteúdo que engaja, de marcas e profissionais a projetos pessoais que pedem atenção e criatividade. Preencha o formulário abaixo com o máximo de detalhes sobre sua demanda. Vou analisar com cuidado e retornar para dar o próximo passo.</p>
+
+      <form class="contact-form" id="meuFormulario">
+        <input type="text" id="wa-nome" placeholder="Nome e Sobrenome" required />
+        <input type="email" id="wa-email" placeholder="Email" required />
+        <textarea id="wa-mensagem" placeholder="Fale um pouco sobre o seu projeto..." rows="4" required></textarea>
+        
+        <button type="submit" class="btn-send">CHAMAR NO WHATSAPP</button>
+      </form>
+    </div>
+  </section>
+</div> 
+
+<footer>
+  <div class="footer-logo">
+    <img src="./img/LOGOFICIAL.png" alt="Lucas Santiago Logo" style="height: 45px; width: auto;">
+  </div>
+  <p class="footer-copy">© 2026 Lucas Santiago — Design & Edição de Vídeos</p>
+</footer>
+
+<div id="cat-box">
+  <label class="switch">
+    <input type="checkbox" id="useless-toggle">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<div id="cat-house">
+  <img src="./img/Gemini_Generated_Image_u2e15ju2e15ju2e1.webp" id="cat-paw" alt="Pata de Gato">
+</div>
+
+<button id="backToTop" title="Voltar ao topo">↑</button>
+
+
+<script>
+// ══════════════════════════════════════════
+// CANVAS DRAWING
+// ══════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  const hero = document.getElementById('hero');
+  let drawing = false;
+  let lastX = 0, lastY = 0;
+  let points = [];
+
+  function resize() {
+    // save old drawing
+    const img = canvas.toDataURL();
+    canvas.width = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    // restore
+    const image = new Image();
+    image.onload = () => ctx.drawImage(image, 0, 0);
+    image.src = img;
+    setupCtx();
+  }
+
+  function setupCtx() {
+    ctx.strokeStyle = '#633c30';
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if (e.touches) {
+      return {
+        x: (e.touches[0].clientX - rect.left) * scaleX,
+        y: (e.touches[0].clientY - rect.top) * scaleY
+      };
+    }
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
+    };
+  }
+
+  function start(e) {
+    if (e.touches && e.touches.length > 1) return; 
+    
+    e.preventDefault();
+    drawing = true;
+    e.preventDefault();
+    drawing = true;
+    points = [];
+    const pos = getPos(e);
+    lastX = pos.x; lastY = pos.y;
+    points.push(pos);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    // Se o usuário tentar usar dois dedos enquanto desenha, cancela o desenho
+    if (e.touches && e.touches.length > 1) {
+      drawing = false;
+      return;
+    }
+    if (!drawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    points.push(pos);
+
+    if (points.length < 3) {
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      return;
+    }
+
+    // Smooth curve using quadratic bezier
+    ctx.beginPath();
+    ctx.moveTo(points[points.length - 3].x, points[points.length - 3].y);
+    const midX = (points[points.length - 2].x + pos.x) / 2;
+    const midY = (points[points.length - 2].y + pos.y) / 2;
+    ctx.quadraticCurveTo(
+      points[points.length - 2].x,
+      points[points.length - 2].y,
+      midX, midY
+    );
+    ctx.stroke();
+
+    lastX = pos.x; lastY = pos.y;
+  }
+
+  function stop(e) {
+    if (!drawing) return;
+    drawing = false;
+    ctx.closePath();
+  }
+
+  // Mouse events
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('mouseleave', stop);
+
+  // Touch events
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
+  canvas.addEventListener('touchend', stop);
+
+  // Clear button
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+
+  // Init
+  resize();
+  window.addEventListener('resize', resize);
+})();
+
+// ══════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════
+(function() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+})();
+
+// ══════════════════════════════════════════
+// ENVIO PARA O WHATSAPP
+// ══════════════════════════════════════════
+document.getElementById('meuFormulario').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const nome = document.getElementById('wa-nome').value;
+  const email = document.getElementById('wa-email').value;
+  const mensagem = document.getElementById('wa-mensagem').value;
+
+  const telefone = "5549991070618"; 
+
+  const texto = `Olá Lucas! Vim pelo seu portfólio.%0A%0A*Nome:* ${nome}%0A*Email:* ${email}%0A*Sobre o projeto:* ${mensagem}`;
+  const url = `https://wa.me/${telefone}?text=${texto}`;
+
+  window.open(url, '_blank');
+});
+
+// ══════════════════════════════════════════
+// BOTÃO VOLTAR AO TOPO
+// ══════════════════════════════════════════
+const backToTopBtn = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+  // Mostra o botão quando o usuário descer mais de 400px
+  if (window.pageYOffset > 400) {
+    backToTopBtn.classList.add('show');
+  } else {
+    backToTopBtn.classList.remove('show');
+  }
+});
+
+backToTopBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // Garante o deslize suave
+  });
+});
+
+// ══════════════════════════════════════════
+// MENTE DO GATO (COM EFEITOS SONOROS)
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('useless-toggle');
+  const catPaw = document.getElementById('cat-paw');
+
+  // 1. CARREGANDO OS SONS (Ajuste o caminho para a sua pasta!)
+  const clickSound = new Audio('./audio/mixkit-arcade-game-jump-coin-216.wav'); 
+  const meowSound = new Audio('./audio/sound_garage-cat-meow-8-fx-306184.mp3');
+
+  meowSound.volume = 0.3;
+
+  if (toggleBtn && catPaw) {
+    toggleBtn.addEventListener('change', function() {
+      
+      // Toca o click toda vez que o botão mudar de estado (você clicando nele)
+      clickSound.currentTime = 0; // Zera o som para poder tocar rápido de novo
+      clickSound.play();
+
+      if (this.checked) {
+        
+        // Gato entra em alerta (Espera 0.5s)
+        setTimeout(() => {
+          
+          // Toca o miado exatamente quando a pata vai dar o bote!
+          meowSound.currentTime = 0;
+          meowSound.play();
+          
+          // Patinha entra na tela
+          catPaw.classList.add('atacar');
+          
+          // Tempo para a pata chegar no interruptor (0.3s)
+          setTimeout(() => {
+            
+            // Desliga o interruptor sozinho!
+            toggleBtn.checked = false; 
+            
+            // Toca o click de novo, porque a patinha desligou o botão!
+            clickSound.currentTime = 0;
+            clickSound.play();
+
+            // Patinha recua para o esconderijo (Espera 0.2s)
+            setTimeout(() => {
+              catPaw.classList.remove('atacar');
+            }, 200); 
+            
+          }, 300); 
+          
+        }, 500); 
+      }
+    });
+  }
+});
+
+</script>
+</body>
+</html>
