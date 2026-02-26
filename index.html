@@ -1411,15 +1411,13 @@
 
 <script>
 // ══════════════════════════════════════════
-// CANVAS DRAWING (DESENHO NA TELA COM REDESENHO)
+// CANVAS DRAWING (HIGH-DPI / QUALIDADE RETINA)
 // ══════════════════════════════════════════
 (function() {
   const canvas = document.getElementById('heroCanvas');
   const ctx = canvas.getContext('2d');
   const hero = document.getElementById('hero');
   let drawing = false;
-  
-  // 🔥 A CORREÇÃO: Agora guardamos uma lista de "traços", não apenas pontos soltos
   let paths = []; 
   let currentPath = []; 
 
@@ -1435,9 +1433,12 @@
   window.atualizarDesenho = setupAndRedraw;
 
   function redrawAll() {
+    // Para limpar uma tela de alta resolução, precisamos desligar a escala rapidinho
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
     
-    // Passa por cada traço separado e desenha (levantando a caneta entre eles)
     paths.forEach(path => {
       if (path.length < 2) return;
       
@@ -1465,24 +1466,34 @@
   }
 
   function resize() {
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
+    const rect = hero.getBoundingClientRect();
+    
+    // 🔥 A MÁGICA DO HIGH-DPI ACONTECE AQUI
+    // Descobre o nível de zoom real da tela do dispositivo (ex: 2 ou 3)
+    const dpr = window.devicePixelRatio || 1;
+    
+    // Multiplica a resolução interna do Canvas pela densidade da tela (4K)
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    
+    // Ajusta o "pincel" para não ficar gigante, voltando ao tamanho visual correto
+    ctx.scale(dpr, dpr);
+    
     setupAndRedraw(); 
   }
 
   function getPos(e) {
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+    // Como escalamos o pincel ali em cima, a coordenada agora é exata, sem matemática extra
     if (e.touches) {
       return {
-        x: (e.touches[0].clientX - rect.left) * scaleX,
-        y: (e.touches[0].clientY - rect.top) * scaleY
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top
       };
     }
     return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
     };
   }
 
@@ -1493,7 +1504,6 @@
     drawing = true;
     const pos = getPos(e);
     
-    // Começa um traço NOVO na memória
     currentPath = [pos];
     paths.push(currentPath);
     
@@ -1510,7 +1520,6 @@
     e.preventDefault();
     const pos = getPos(e);
     
-    // Salva o ponto apenas no traço atual
     currentPath.push(pos);
     
     if (currentPath.length < 3) {
@@ -1547,9 +1556,11 @@
   canvas.addEventListener('touchend', stop);
 
   document.getElementById('clearBtn').addEventListener('click', () => {
-    // Limpa os traços da memória quando clica no botão "Limpar"
     paths = [];
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
   });
 
   resize();
@@ -1687,6 +1698,21 @@ if (darkModeToggleBtn) {
     }
   });
 }
+
+// Verifica se o cliente já tinha deixado no escuro na última visita
+if (localStorage.getItem('lups-theme') === 'dark') {
+  pageBody.classList.add('dark-theme');
+  // Se começar escuro, já coloca o ícone de Sol
+  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = solIcon;
+  
+  // 🔥 A CORREÇÃO: Avisa a caneta do canvas para ficar clara logo de cara!
+  if (window.atualizarDesenho) window.atualizarDesenho();
+  
+} else {
+  // Se começar claro, coloca o ícone de Lua
+  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = luaIcon;
+}
+
 </script>
 </body>
 </html>
