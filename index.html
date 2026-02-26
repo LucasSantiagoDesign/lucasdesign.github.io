@@ -1411,31 +1411,63 @@
 
 <script>
 // ══════════════════════════════════════════
-// CANVAS DRAWING
+// CANVAS DRAWING (DESENHO NA TELA COM REDESENHO)
 // ══════════════════════════════════════════
 (function() {
   const canvas = document.getElementById('heroCanvas');
   const ctx = canvas.getContext('2d');
   const hero = document.getElementById('hero');
   let drawing = false;
-  let lastX = 0, lastY = 0;
-  let points = [];
+  
+  // 🔥 A CORREÇÃO: Agora guardamos uma lista de "traços", não apenas pontos soltos
+  let paths = []; 
+  let currentPath = []; 
 
-  function resize() {
-    const img = canvas.toDataURL();
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
-    const image = new Image();
-    image.onload = () => ctx.drawImage(image, 0, 0);
-    image.src = img;
-    setupCtx();
-  }
-
-  function setupCtx() {
-    ctx.strokeStyle = '#633c30';
+  function setupAndRedraw() {
+    const isDark = document.body.classList.contains('dark-theme');
+    ctx.strokeStyle = isDark ? '#FAF0E0' : '#633c30'; 
     ctx.lineWidth = 8;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+    redrawAll();
+  }
+
+  window.atualizarDesenho = setupAndRedraw;
+
+  function redrawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Passa por cada traço separado e desenha (levantando a caneta entre eles)
+    paths.forEach(path => {
+      if (path.length < 2) return;
+      
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      
+      for (let i = 1; i < path.length - 2; i++) {
+        const xc = (path[i].x + path[i + 1].x) / 2;
+        const yc = (path[i].y + path[i + 1].y) / 2;
+        ctx.quadraticCurveTo(path[i].x, path[i].y, xc, yc);
+      }
+      
+      if (path.length > 2) {
+         ctx.quadraticCurveTo(
+           path[path.length - 2].x,
+           path[path.length - 2].y,
+           path[path.length - 1].x,
+           path[path.length - 1].y
+         );
+      } else {
+         ctx.lineTo(path[1].x, path[1].y);
+      }
+      ctx.stroke();
+    });
+  }
+
+  function resize() {
+    canvas.width = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    setupAndRedraw(); 
   }
 
   function getPos(e) {
@@ -1459,12 +1491,14 @@
     
     e.preventDefault();
     drawing = true;
-    points = [];
     const pos = getPos(e);
-    lastX = pos.x; lastY = pos.y;
-    points.push(pos);
+    
+    // Começa um traço NOVO na memória
+    currentPath = [pos];
+    paths.push(currentPath);
+    
     ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
+    ctx.moveTo(pos.x, pos.y);
   }
 
   function draw(e) {
@@ -1475,26 +1509,26 @@
     }
     e.preventDefault();
     const pos = getPos(e);
-    points.push(pos);
-
-    if (points.length < 3) {
+    
+    // Salva o ponto apenas no traço atual
+    currentPath.push(pos);
+    
+    if (currentPath.length < 3) {
       ctx.lineTo(pos.x, pos.y);
       ctx.stroke();
       return;
     }
 
     ctx.beginPath();
-    ctx.moveTo(points[points.length - 3].x, points[points.length - 3].y);
-    const midX = (points[points.length - 2].x + pos.x) / 2;
-    const midY = (points[points.length - 2].y + pos.y) / 2;
+    ctx.moveTo(currentPath[currentPath.length - 3].x, currentPath[currentPath.length - 3].y);
+    const midX = (currentPath[currentPath.length - 2].x + pos.x) / 2;
+    const midY = (currentPath[currentPath.length - 2].y + pos.y) / 2;
     ctx.quadraticCurveTo(
-      points[points.length - 2].x,
-      points[points.length - 2].y,
+      currentPath[currentPath.length - 2].x,
+      currentPath[currentPath.length - 2].y,
       midX, midY
     );
     ctx.stroke();
-
-    lastX = pos.x; lastY = pos.y;
   }
 
   function stop(e) {
@@ -1513,6 +1547,8 @@
   canvas.addEventListener('touchend', stop);
 
   document.getElementById('clearBtn').addEventListener('click', () => {
+    // Limpa os traços da memória quando clica no botão "Limpar"
+    paths = [];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
 
@@ -1521,7 +1557,7 @@
 })();
 
 // ══════════════════════════════════════════
-// SCROLL REVEAL
+// SCROLL REVEAL (ANIMAÇÃO AO DESCER A TELA)
 // ══════════════════════════════════════════
 (function() {
   const reveals = document.querySelectorAll('.reveal');
@@ -1588,32 +1624,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (toggleBtn && catPaw) {
     toggleBtn.addEventListener('change', function() {
-      
       clickSound.currentTime = 0; 
       clickSound.play();
 
       if (this.checked) {
-        
         setTimeout(() => {
-          
           meowSound.currentTime = 0;
           meowSound.play();
           
           catPaw.classList.add('atacar');
           
           setTimeout(() => {
-            
             toggleBtn.checked = false; 
-            
             clickSound.currentTime = 0;
             clickSound.play();
 
             setTimeout(() => {
               catPaw.classList.remove('atacar');
             }, 200); 
-            
           }, 300); 
-          
         }, 500); 
       }
     });
@@ -1621,28 +1650,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ══════════════════════════════════════════
-// TEMA ESCURO MANUAL (TOGGLE)
+// TEMA ESCURO MANUAL (BOTÃO DA LUA/SOL COM REDESENHO)
 // ══════════════════════════════════════════
 const darkModeToggleBtn = document.getElementById('darkModeToggle');
 const pageBody = document.body;
 
+// Ícones SVG para Lua e Sol
+const luaIcon = '<svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="currentColor"/></svg>';
+const solIcon = '<svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z" fill="currentColor"/></svg>';
+
 // Verifica se o cliente já tinha deixado no escuro na última visita
 if (localStorage.getItem('lups-theme') === 'dark') {
   pageBody.classList.add('dark-theme');
+  // Se começar escuro, já coloca o ícone de Sol
+  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = solIcon;
+} else {
+  // Se começar claro, coloca o ícone de Lua
+  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = luaIcon;
 }
 
-// Ao clicar no botão da lua
-darkModeToggleBtn.addEventListener('click', () => {
-  pageBody.classList.toggle('dark-theme');
-  
-  // Salva a escolha no navegador do cliente
-  if (pageBody.classList.contains('dark-theme')) {
-    localStorage.setItem('lups-theme', 'dark');
-  } else {
-    localStorage.setItem('lups-theme', 'light');
-  }
-});
-
+// Ao clicar no botão da lua/sol
+if (darkModeToggleBtn) {
+  darkModeToggleBtn.addEventListener('click', () => {
+    pageBody.classList.toggle('dark-theme');
+    
+    // 🔥 A MÁGICA: Chamamos a função para atualizar o desenho instantaneamente
+    if (window.atualizarDesenho) window.atualizarDesenho(); 
+    
+    // Troca o ícone e salva a preferência
+    if (pageBody.classList.contains('dark-theme')) {
+      localStorage.setItem('lups-theme', 'dark');
+      darkModeToggleBtn.innerHTML = solIcon;
+    } else {
+      localStorage.setItem('lups-theme', 'light');
+      darkModeToggleBtn.innerHTML = luaIcon;
+    }
+  });
+}
 </script>
 </body>
 </html>
