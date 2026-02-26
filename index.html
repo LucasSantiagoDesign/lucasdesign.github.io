@@ -1159,6 +1159,77 @@
       right: 0px; /* Distância que ela avança por cima do interruptor */
     }
 
+/* =========================================
+       🔥 BLINDAGEM DEFINITIVA E REVISÃO DE CORES 🔥
+       ========================================= */
+
+    /* 1. RESET DE TEXTO PARA A BASE MARROM */
+    body, h1, h2, h3, p, span, a, div, .hero-sub, .hero-hint, .nav-mais, .footer-copy {
+      color: var(--brown);
+      -webkit-text-fill-color: var(--brown);
+    }
+
+    /* 2. FORÇA A COR DO TEXTO CLARO CONTRA O FUNDO ESCURO */
+    /* Isso garante que textos sobre marrom sejam creme */
+    .marquee-track span, .dropdown a, .vid-card-title, .vid-sound-btn {
+      color: var(--cream) !important;
+      -webkit-text-fill-color: var(--cream) !important;
+    }
+
+    /* 3. REVISÃO ESPECÍFICA DE BOTÕES (O Truque da Imagem nos Botões) */
+    
+    /* Botões Marrons com texto Laranja (Limpar, Rótulo da Foto, Voltar ao Topo) */
+    #clearBtn, .photo-label, #backToTop {
+      background-color: transparent !important;
+      /* O micro-gradiente engana o navegador e protege o fundo marrom */
+      background-image: linear-gradient(180deg, #633C30 0%, #633C31 100%) !important;
+      color: #FBC580 !important;
+      -webkit-text-fill-color: #FBC580 !important;
+      border: none !important;
+    }
+
+    /* Botões Laranjas com texto Marrom (Um pouco mais, Enviar) */
+    .btn-mais, .btn-send {
+      background-color: transparent !important;
+      /* O micro-gradiente protege o fundo laranja */
+      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
+      color: #633C30 !important;
+      -webkit-text-fill-color: #633C30 !important;
+      border: none !important;
+    }
+
+    /* Botão CTA (Que tem fundo transparente e borda laranja) */
+    .btn-cta {
+      background-color: transparent !important;
+      background-image: none !important;
+      border: 3px solid #FBC580 !important;
+      color: #633C30 !important;
+      -webkit-text-fill-color: #633C30 !important;
+    }
+
+    .btn-cta:hover {
+      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
+    }
+
+    /* 4. BLINDAGEM DE FUNDO GERAL COM MICRO-GRADIENTES */
+    /* Fundo Creme Geral */
+    body, #about, .cta-contact-wrapper {
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #FAF0E0 0%, #FAF0E1 100%) !important;
+    }
+
+    /* Fundo Laranja Geral (Topo e Footer) */
+    .pattern-orange, footer {
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
+    }
+
+    /* Fundo Bege Geral (Projetos) */
+    .pattern-beige {
+      background-color: transparent !important;
+      background-image: url("./img/Documento2.webp"), linear-gradient(180deg, #CFB28C 0%, #CFB28D 100%) !important;
+    }
+
   </style>
 </head>
 <body>
