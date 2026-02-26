@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light only">
+  <meta name="color-scheme" content="light dark">
   <title>Lucas Santiago — Designer & Editor de Vídeos</title>
 
   <link rel="preload" as="image" href="./img/Documento.webp">
@@ -16,34 +16,21 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-  color-scheme: light only; /* O 'only' é o segredo para navegadores teimosos */
-  --cream:   #FAF0E0;
-  --beige:   #CFB28C;
-  --orange:  #FBC580;
-  --brown:   #633C30;
-  --brown-light: #9e6a57;
-}
+      color-scheme: light dark;
+      --cream:   #FAF0E0;
+      --beige:   #CFB28C;
+      --orange:  #FBC580;
+      --brown:   #633C30;
+      --brown-light: #9e6a57;
+    }
 
-@media (prefers-color-scheme: dark) {
-
-:root {
-  color-scheme: light only; /* O 'only' é o segredo para navegadores teimosos */
-  --cream:   #FAF0E0;
-  --beige:   #CFB28C;
-  --orange:  #FBC580;
-  --brown:   #633C30;
-  --brown-light: #9e6a57;
-   }
-}
     html { scroll-behavior: smooth; }
 
     body {
       font-family: "filson-pro", sans-serif; 
       font-weight: 700;
-      /* Truque: Gradiente com a mesma cor engana o Modo Escuro */
-      background-image: linear-gradient(var(--cream), var(--cream)) !important;
-      background-color: transparent !important; 
-      color: var(--brown) !important; 
+      background-color: var(--cream);
+      color: var(--brown);
       overflow-x: hidden;
     }
 
@@ -61,9 +48,9 @@
 
     /* ── VÍDEO VERTICAL (REELS/TIKTOK) ── */
     .vid-card.vid-vertical {
-      aspect-ratio: 9/16; /* Inverte o formato para vertical */
-      max-width: 320px; /* Limita a largura para não ficar um gigante na tela do PC */
-      margin: 0 auto; /* Centraliza ele direitinho na coluna */
+      aspect-ratio: 9/16; 
+      max-width: 320px; 
+      margin: 0 auto; 
     }
 
     .vid-sound-btn, .vid-card-title {
@@ -71,41 +58,38 @@
     }
 
     /* ── ACELERAÇÃO DE HARDWARE (GPU) ── */
-/* Aplicamos apenas nas camadas de fundo para não pesar os elementos interativos */
-.pattern-orange::before, 
-.pattern-beige, 
-.cta-contact-wrapper::before {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* ── PATTERNS DE FUNDO ── */
-
-/* TOPO (Hero) */
-    .pattern-orange {
-      position: relative;
-      background-image: linear-gradient(var(--orange), var(--orange)) !important;
-      background-color: transparent !important;
+    .pattern-orange::before, 
+    .pattern-beige, 
+    .cta-contact-wrapper::before {
+      transform: translateZ(0);
+      will-change: transform;
     }
 
-/* Criamos uma camada só para a imagem do topo */
-.pattern-orange::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("./img/Documento_11zon.webp");
-  background-size: cover;
-  background-position: center;
-  z-index: 0; /* Fica atrás de tudo */
-  pointer-events: none;
-  opacity: 0.30;
-}
+    /* ── PATTERNS DE FUNDO ── */
 
-/* PROJETOS (Meio) */
+    /* TOPO (Hero) */
+    .pattern-orange {
+      position: relative;
+      background-color: var(--orange);
+    }
+
+    /* Criamos uma camada só para a imagem do topo */
+    .pattern-orange::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("./img/Documento_11zon.webp");
+      background-size: cover;
+      background-position: center;
+      z-index: 0; 
+      pointer-events: none;
+      opacity: 0.30;
+    }
+
+    /* PROJETOS (Meio) */
     .pattern-beige {
-      /* Colocamos a sua textura e a cor bege juntas no mesmo comando de imagem */
-      background-image: url("./img/Documento2.webp"), linear-gradient(var(--beige), var(--beige)) !important;
-      background-color: transparent !important;
+      background-color: var(--beige);
+      background-image: url("./img/Documento2.webp");
       background-size: cover;
       background-position: center;
     }
@@ -120,18 +104,16 @@
       justify-content: space-between;
       padding: 15px 40px;
       transition: all 0.3s ease;
-      /* O fundo e o blur saíram daqui e foram para a camada abaixo! */
     }
 
     /* ── A CAMADA DO VIDRO (Fica atrás dos botões) ── */
     nav::before {
       content: '';
       position: absolute;
-      inset: 0; /* Preenche exatamente o tamanho da barra nav */
-      z-index: -1; /* Joga a textura de vidro para trás dos textos/botões */
-      pointer-events: none; /* Garante que o vidro não bloqueie os cliques do mouse */
+      inset: 0; 
+      z-index: -1; 
+      pointer-events: none; 
       
-      /* O Gradiente, Blur e Máscara vêm todos para cá: */
       background: linear-gradient(to bottom, rgba(250, 240, 224, 0.4) 0%, rgba(250, 240, 224, 0) 100%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -179,13 +161,12 @@
       gap: 4px;
       cursor: pointer;
       text-transform: uppercase;
-      position: relative; /* Importante para a caixinha alinhar nele */
-      padding: 10px 0; /* Aumenta a área de contato para não fechar fácil */
+      position: relative; 
+      padding: 10px 0; 
     }
 
     .nav-mais .arrow { font-size: 10px; transition: transform 0.2s; }
     
-    /* GATILHO: Quando encosta no MAIS, mostra o DROPDOWN */
     .nav-mais:hover .dropdown { 
       display: block !important; 
     }
@@ -194,11 +175,11 @@
 
     /* A CAIXINHA DO MENU */
     .dropdown {
-      display: none; /* Escondido por padrão */
+      display: none; 
       position: absolute;
       top: 100%; 
       left: 0;
-      background: var(--brown); /* Marrom da Lups Design */
+      background: var(--brown); 
       border-radius: 8px;
       padding: 8px 0;
       min-width: 160px;
@@ -208,14 +189,14 @@
 
     /* FORMATANDO OS LINKS DENTRO DO MENU */
     .dropdown a {
-      display: block !important; /* UM EMBAIXO DO OUTRO */
+      display: block !important; 
       padding: 12px 20px !important;
-      color: var(--cream) !important; /* Cor clara */
+      color: var(--cream) !important; 
       font-family: "filson-pro", sans-serif; 
       font-weight: 700 !important;
       font-size: 13px !important;
       letter-spacing: 1px;
-      text-decoration: none !important; /* MATA O AZUL E O SUBSCRITO */
+      text-decoration: none !important; 
       transition: background 0.2s;
       text-align: left;
     }
@@ -224,23 +205,20 @@
       background: rgba(255,255,255,0.1) !important; 
     }
 
-    /* Links que só aparecem no celular */
     .dropdown a.mobile-only-link { 
-  display: none !important; 
-}
+      display: none !important; 
+    }
 
-@media (max-width: 900px) {
-  /* No mobile (abaixo de 900px), eles voltam a aparecer */
-  .dropdown a.mobile-only-link { 
-    display: block !important; 
-  }
-  
-  /* Esconde os ícones e textos soltos do topo no mobile */
-  .desktop-only-icon, 
-  .desktop-only-text { 
-    display: none !important; 
-  }
-}
+    @media (max-width: 900px) {
+      .dropdown a.mobile-only-link { 
+        display: block !important; 
+      }
+      
+      .desktop-only-icon, 
+      .desktop-only-text { 
+        display: none !important; 
+      }
+    }
 
     /* ── LOGO ── */
     .nav-logo {
@@ -353,8 +331,7 @@
 
     /* ── MARQUEE ── */
     .marquee-wrap {
-      background-image: linear-gradient(var(--brown), var(--brown)) !important;
-      background-color: transparent !important;
+      background: var(--brown);
       padding: 16px 0;
       overflow: hidden;
       white-space: nowrap;
@@ -387,8 +364,7 @@
 
     /* ── ABOUT ── */
     #about {
-      background-image: linear-gradient(var(--cream), var(--cream)) !important;
-      background-color: transparent !important;
+      background: var(--cream);
       padding: 100px 40px;
     }
 
@@ -447,20 +423,20 @@
     }
 
     .photo-label {
-    position: absolute;
-    bottom: 20px;
-    left: 63%; /* Alterado de 63% para 50% */
-    transform: translateX(-50%); /* Isso garante que o MEIO da etiqueta alinhe com o MEIO da foto */
-    background: var(--brown);
-    color: var(--orange);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-family: "filson-pro", sans-serif;
-    font-weight: 400;
-    font-size: 12px;
-    letter-spacing: 2px;
-    z-index: 2;
-  }
+      position: absolute;
+      bottom: 20px;
+      left: 63%; 
+      transform: translateX(-50%); 
+      background: var(--brown);
+      color: var(--orange);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-family: "filson-pro", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 2px;
+      z-index: 2;
+    }
 
     .about-right h2 {
       font-family: "anchor-web", sans-serif;
@@ -574,10 +550,9 @@
     /* Video Grid */
     .vid-grid {
       display: grid;
-      /* A mágica acontece aqui: a 1ª coluna pega espaço maior (2.5) e a 2ª pega menos (1) */
       grid-template-columns: 2.5fr 1fr; 
       gap: 30px;
-      align-items: center; /* Deixa os dois centralizados na mesma linha */
+      align-items: center; 
     }
 
     .vid-card {
@@ -589,12 +564,10 @@
       width: 100%;
     }
 
-    /* Classe específica para o vídeo deitado */
     .vid-horizontal {
       aspect-ratio: 16/9;
     }
 
-    /* Classe específica para o vídeo em pé */
     .vid-vertical {
       aspect-ratio: 9/16;
       max-width: 320px; 
@@ -666,8 +639,7 @@
     /* ── ENVELOPE QUE JUNTA AS DUAS SEÇÕES ── */
     .cta-contact-wrapper {
       position: relative;
-      background-image: linear-gradient(var(--cream), var(--cream)) !important;
-      background-color: transparent !important;
+      background: var(--cream);
       overflow: hidden;
     }
 
@@ -676,7 +648,7 @@
       position: absolute;
       inset: 0;
       background-image: url("./img/Documento3.webp"); 
-      background-size: 100% auto; /* Ajustado para não dar zoom excessivo na imagem */
+      background-size: 100% auto; 
       background-position: top center;
       background-repeat: repeat;
       opacity: 0.15; 
@@ -686,11 +658,11 @@
 
     /* ── CTA ── */
     #cta {
-      background: transparent; /* Tem que ser transparente para a textura aparecer! */
+      background: transparent; 
       padding: 120px 40px;
       text-align: center;
-      position: relative; /* Adicione isso */
-      z-index: 1; /* Adicione isso */
+      position: relative; 
+      z-index: 1; 
     }
 
     #cta h2 {
@@ -737,8 +709,8 @@
 
     /* ── CONTACT ── */
     #contact {
-      background: transparent; /* ← TRANSPARENTE AQUI TAMBÉM */
-      padding: 0px 40px 60px; /* Reduzi o padding do topo para grudar melhor no CTA */
+      background: transparent; 
+      padding: 0px 40px 60px; 
       position: relative;
       z-index: 1; 
     }
@@ -839,44 +811,39 @@
     }
 
     footer {
-      background-image: linear-gradient(var(--orange), var(--orange)) !important;
-      background-color: transparent !important;
+      background: var(--orange);
       padding: 40px 30px; 
       text-align: center;
     }
 
-.footer-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* Removi a opacidade para o logo destacar mais no fundo colorido */
-}
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.footer-logo img {
-  height: 34px; /* Aumentamos de 24px para 34px para dar mais destaque */
-  width: auto;
-}
+    .footer-logo img {
+      height: 34px; 
+      width: auto;
+    }
 
-.footer-copy {
-  font-size: 13px; 
-  color: var(--brown); /* Garante a cor marrom */
-  margin-top: 16px;
-  letter-spacing: 1px;
-  font-weight: 700; /* Deixa a fonte mais grossa/visível */
-}
+    .footer-copy {
+      font-size: 13px; 
+      color: var(--brown); 
+      margin-top: 16px;
+      letter-spacing: 1px;
+      font-weight: 700; 
+    }
 
     /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-
-  .photo-placeholder { 
-    width: 100%; 
-    max-width: 400px; 
-    height: auto; 
-    margin: 0 auto;
-    
-    /* O MOVIMENTO VEM PARA CÁ (move a caixa inteira: foto + etiqueta) */
-    transform: translateX(-8%); 
-  }
+    @media (max-width: 900px) {
+      .photo-placeholder { 
+        width: 100%; 
+        max-width: 400px; 
+        height: auto; 
+        margin: 0 auto;
+        transform: translateX(-8%); 
+      }
 
       nav { padding: 14px 20px; }
       .nav-logo img { height: 28px !important; }
@@ -914,27 +881,25 @@
       transform: translateY(0);
     }
 
-.final-bar {
+    .final-bar {
       width: 100%;
-      height: 30px; /* Altura da barra. Se achar muito grossa, diminua para 20px ou 24px */
-      background: var(--orange); /* Usa a mesma cor laranja dos seus botões */
+      height: 30px; 
+      background: var(--orange); 
     }
     
     /* ✅ NOVO BLOCO MOBILE: CORRIGE POSIÇÃO E ESTÉTICA */
     @media (max-width: 900px) {
       #scrollDownBtn { 
-        /* 1. Trava de Posição (Para fugir da barra do celular e centralizar) */
         display: flex !important; 
         flex-direction: column !important; 
         align-items: center !important; 
         position: absolute !important;
-        bottom: 140px !important; /* Altura ideal para mobile */
+        bottom: 140px !important; 
         left: 50% !important;
         top: auto !important; 
         transform: translateX(-50%) !important;
         z-index: 20 !important;
 
-        /* 2. Devolvendo a Estética Lups Design */
         text-decoration: none !important; 
         color: var(--brown) !important; 
         font-family: "filson-pro", sans-serif !important;
@@ -946,14 +911,12 @@
         text-align: center !important;
       }
 
-      /* Garante que a setinha também fique marrom */
       #scrollDownBtn .arrow-down {
         font-size: 20px !important;
         margin-top: 4px !important;
         color: var(--brown) !important;
       }
 
-      /* Ajuste do botão de limpar para não bater no Ver Mais */
       #clearBtn { 
         right: 15px !important; 
         bottom: 25px !important; 
@@ -964,14 +927,12 @@
       }
     }
 
-  /* Deixa o botão de limpar no lugar certo */
-  #clearBtn { 
-    right: 15px !important; 
-    bottom: 25px !important; 
-    z-index: 10 !important;
-    position: absolute !important;
-  }
-
+    #clearBtn { 
+      right: 15px !important; 
+      bottom: 25px !important; 
+      z-index: 10 !important;
+      position: absolute !important;
+    }
 
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
@@ -979,10 +940,8 @@
       60% {transform: translateY(-3px);}
     }
 
-    /* Mostrar apenas no celular */
     @media (max-width: 900px) {
       #scrollDownBtn { display: flex; flex-direction: column; align-items: center; }
-      /* Dica: aumente o z-index do clearBtn para não ficar em cima do novo botão */
       #clearBtn { right: 15px; bottom: 15px; padding: 6px 12px; font-size: 10px; }
     }
 
@@ -1003,14 +962,12 @@
       font-size: 22px;
       cursor: pointer;
       z-index: 1000;
-      /* Começa escondido */
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(99, 60, 48, 0.3);
     }
 
-    /* Classe que o JS vai ativar ao scrollar */
     #backToTop.show {
       opacity: 1;
       visibility: visible;
@@ -1022,7 +979,6 @@
       color: var(--cream);
     }
 
-    /* Ajuste para mobile para não bater nos botões que já existem */
     @media (max-width: 900px) {
       #backToTop {
         bottom: 20px;
@@ -1032,18 +988,18 @@
       }
     }
 
-    /* ── CAIXA LATERAL ESTILO USELESS BOX (Ajustado) ── */
+    /* ── CAIXA LATERAL ESTILO USELESS BOX ── */
     #cat-box {
       position: fixed;
       top: 50%;
       right: 0;
       transform: translateY(-50%);
-      background: #633C30; /* Marrom-médio do gato */
+      background: #633C30; 
       padding: 18px 12px;
       border-radius: 12px 0 0 12px;
       box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
-      z-index: 1000; /* Fica acima do menu nav (z-index: 999) */
-      border: 2px solid #FBC580; /* Cor laranja de destaque */
+      z-index: 1000; 
+      border: 2px solid #FBC580; 
       border-right: none;
     }
 
@@ -1052,7 +1008,7 @@
       position: relative;
       display: inline-block;
       width: 28px;
-      height: 56px; /* Interruptor vertical */
+      height: 56px; 
     }
     .switch input { opacity: 0; width: 0; height: 0; }
     
@@ -1060,7 +1016,7 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #FAF0E0; /* Cor creme de fundo */
+      background-color: #FAF0E0; 
       transition: .4s;
       border-radius: 28px;
     }
@@ -1070,69 +1026,23 @@
       content: "";
       height: 22px; width: 22px;
       left: 3px; bottom: 3px;
-      background-color: #633C30; /* Marrom do gato */
+      background-color: #633C30; 
       transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       border-radius: 50%;
     }
     
-    input:checked + .slider { background-color: #FBC580; /* Laranja ativado */ }
+    input:checked + .slider { background-color: #FBC580; }
     input:checked + .slider:before { transform: translateY(-28px); }
 
-    /* ── CAIXA LATERAL ESTILO USELESS BOX (Ajustado) ── */
-    #cat-box {
-      position: fixed;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      background: #633C30; /* Marrom-médio do gato */
-      padding: 18px 12px;
-      border-radius: 12px 0 0 12px;
-      box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
-      z-index: 1000; /* Fica acima do menu nav (z-index: 999) */
-      border: 2px solid #FBC580; /* Cor laranja de destaque */
-      border-right: none;
-    }
-
-    /* ── O INTERRUPTOR (SWITCH) ── */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 28px;
-      height: 56px; /* Interruptor vertical */
-    }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #FAF0E0; /* Cor creme de fundo */
-      transition: .4s;
-      border-radius: 28px;
-    }
-    
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 22px; width: 22px;
-      left: 3px; bottom: 3px;
-      background-color: #633C30; /* Marrom do gato */
-      transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      border-radius: 50%;
-    }
-    
-    input:checked + .slider { background-color: #FBC580; /* Laranja ativado */ }
-    input:checked + .slider:before { transform: translateY(-28px); }
-
-    /* ── O "TÚNEL" DA PATINHA (Agora sim, Horizontal!) ── */
+    /* ── O "TÚNEL" DA PATINHA ── */
     #cat-house {
       position: fixed;
       top: 50%; 
       right: 0;
       transform: translateY(-50%);
-      width: 300px; /* Túnel bem largo para caber o movimento todo */
-      height: 250px; /* Altura folgada para não cortar os pelos da pata */
-      overflow: hidden; /* Corta a pata na borda da tela */
+      width: 300px; 
+      height: 250px; 
+      overflow: hidden; 
       pointer-events: none; 
       z-index: 1001; 
     }
@@ -1141,93 +1051,49 @@
     #cat-paw {
       position: absolute; 
       top: 50%; 
-      right: -250px; /* Começa escondida na DIREITA, fora da tela */
-      transform: translateY(-50%); /* Apenas centraliza a altura, sem girar! */
-      
-      /* 👇👇👇 É AQUI QUE VOCÊ MUDA O TAMANHO 👇👇👇 */
+      right: -250px; 
+      transform: translateY(-50%); 
       width: 120px; 
-      /* 👆👆👆 AUMENTE OU DIMINUA ESSE VALOR (ex: 200px, 220px) 👆👆👆 */
-
       pointer-events: none;
       transition: right 0.3s ease-out;
-
       filter: drop-shadow(-8px 10px 8px rgba(0, 0, 0, 0.4));
     }
 
-    /* O bote! A pata desliza para a ESQUERDA */
     #cat-paw.atacar {
-      right: 0px; /* Distância que ela avança por cima do interruptor */
+      right: 0px; 
     }
 
-/* =========================================
-       🔥 BLINDAGEM DEFINITIVA E REVISÃO DE CORES 🔥
+    /* =========================================
+       🌙 TEMA ESCURO OFICIAL LUPS DESIGN 🌙
        ========================================= */
+    @media (prefers-color-scheme: dark) and (max-width: 900px) {
+      :root {
+        --cream:   #1A110C; 
+        --beige:   #2B1D16; 
+        --brown:   #FAF0E0; 
+      }
 
-    /* 1. RESET DE TEXTO PARA A BASE MARROM */
-    body, h1, h2, h3, p, span, a, div, .hero-sub, .hero-hint, .nav-mais, .footer-copy {
-      color: var(--brown);
-      -webkit-text-fill-color: var(--brown);
-    }
+      .pattern-orange, footer {
+        background-color: var(--cream) !important;
+        background-image: none !important;
+        border-bottom: 2px solid var(--orange);
+      }
 
-    /* 2. FORÇA A COR DO TEXTO CLARO CONTRA O FUNDO ESCURO */
-    /* Isso garante que textos sobre marrom sejam creme */
-    .marquee-track span, .dropdown a, .vid-card-title, .vid-sound-btn {
-      color: var(--cream) !important;
-      -webkit-text-fill-color: var(--cream) !important;
-    }
+      .pattern-orange::before { opacity: 0.10; }
 
-    /* 3. REVISÃO ESPECÍFICA DE BOTÕES (O Truque da Imagem nos Botões) */
-    
-    /* Botões Marrons com texto Laranja (Limpar, Rótulo da Foto, Voltar ao Topo) */
-    #clearBtn, .photo-label, #backToTop {
-      background-color: transparent !important;
-      /* O micro-gradiente engana o navegador e protege o fundo marrom */
-      background-image: linear-gradient(180deg, #633C30 0%, #633C31 100%) !important;
-      color: #FBC580 !important;
-      -webkit-text-fill-color: #FBC580 !important;
-      border: none !important;
-    }
+      .btn-mais, .btn-send, .btn-cta, .vid-play {
+        color: #1A110C !important;
+        -webkit-text-fill-color: #1A110C !important;
+      }
 
-    /* Botões Laranjas com texto Marrom (Um pouco mais, Enviar) */
-    .btn-mais, .btn-send {
-      background-color: transparent !important;
-      /* O micro-gradiente protege o fundo laranja */
-      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
-      color: #633C30 !important;
-      -webkit-text-fill-color: #633C30 !important;
-      border: none !important;
-    }
+      #clearBtn, .photo-label, #backToTop {
+        color: #1A110C !important;
+        -webkit-text-fill-color: #1A110C !important;
+      }
 
-    /* Botão CTA (Que tem fundo transparente e borda laranja) */
-    .btn-cta {
-      background-color: transparent !important;
-      background-image: none !important;
-      border: 3px solid #FBC580 !important;
-      color: #633C30 !important;
-      -webkit-text-fill-color: #633C30 !important;
-    }
-
-    .btn-cta:hover {
-      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
-    }
-
-    /* 4. BLINDAGEM DE FUNDO GERAL COM MICRO-GRADIENTES */
-    /* Fundo Creme Geral */
-    body, #about, .cta-contact-wrapper {
-      background-color: transparent !important;
-      background-image: linear-gradient(180deg, #FAF0E0 0%, #FAF0E1 100%) !important;
-    }
-
-    /* Fundo Laranja Geral (Topo e Footer) */
-    .pattern-orange, footer {
-      background-color: transparent !important;
-      background-image: linear-gradient(180deg, #FBC580 0%, #FBC581 100%) !important;
-    }
-
-    /* Fundo Bege Geral (Projetos) */
-    .pattern-beige {
-      background-color: transparent !important;
-      background-image: url("./img/Documento2.webp"), linear-gradient(180deg, #CFB28C 0%, #CFB28D 100%) !important;
+      #cat-box { background-color: var(--beige) !important; }
+      .slider { background-color: var(--cream) !important; }
+      .slider:before { background-color: var(--brown) !important; }
     }
 
   </style>
@@ -1442,11 +1308,9 @@
   let points = [];
 
   function resize() {
-    // save old drawing
     const img = canvas.toDataURL();
     canvas.width = hero.offsetWidth;
     canvas.height = hero.offsetHeight;
-    // restore
     const image = new Image();
     image.onload = () => ctx.drawImage(image, 0, 0);
     image.src = img;
@@ -1481,8 +1345,6 @@
     
     e.preventDefault();
     drawing = true;
-    e.preventDefault();
-    drawing = true;
     points = [];
     const pos = getPos(e);
     lastX = pos.x; lastY = pos.y;
@@ -1493,12 +1355,10 @@
 
   function draw(e) {
     if (!drawing) return;
-    // Se o usuário tentar usar dois dedos enquanto desenha, cancela o desenho
     if (e.touches && e.touches.length > 1) {
       drawing = false;
       return;
     }
-    if (!drawing) return;
     e.preventDefault();
     const pos = getPos(e);
     points.push(pos);
@@ -1509,7 +1369,6 @@
       return;
     }
 
-    // Smooth curve using quadratic bezier
     ctx.beginPath();
     ctx.moveTo(points[points.length - 3].x, points[points.length - 3].y);
     const midX = (points[points.length - 2].x + pos.x) / 2;
@@ -1530,23 +1389,19 @@
     ctx.closePath();
   }
 
-  // Mouse events
   canvas.addEventListener('mousedown', start);
   canvas.addEventListener('mousemove', draw);
   canvas.addEventListener('mouseup', stop);
   canvas.addEventListener('mouseleave', stop);
 
-  // Touch events
   canvas.addEventListener('touchstart', start, { passive: false });
   canvas.addEventListener('touchmove', draw, { passive: false });
   canvas.addEventListener('touchend', stop);
 
-  // Clear button
   document.getElementById('clearBtn').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
 
-  // Init
   resize();
   window.addEventListener('resize', resize);
 })();
@@ -1591,7 +1446,6 @@ document.getElementById('meuFormulario').addEventListener('submit', function(e) 
 const backToTopBtn = document.getElementById('backToTop');
 
 window.addEventListener('scroll', () => {
-  // Mostra o botão quando o usuário descer mais de 400px
   if (window.pageYOffset > 400) {
     backToTopBtn.classList.add('show');
   } else {
@@ -1602,7 +1456,7 @@ window.addEventListener('scroll', () => {
 backToTopBtn.addEventListener('click', () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth' // Garante o deslize suave
+    behavior: 'smooth' 
   });
 });
 
@@ -1613,7 +1467,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('useless-toggle');
   const catPaw = document.getElementById('cat-paw');
 
-  // 1. CARREGANDO OS SONS (Ajuste o caminho para a sua pasta!)
   const clickSound = new Audio('./audio/mixkit-arcade-game-jump-coin-216.wav'); 
   const meowSound = new Audio('./audio/sound_garage-cat-meow-8-fx-306184.mp3');
 
@@ -1622,33 +1475,25 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleBtn && catPaw) {
     toggleBtn.addEventListener('change', function() {
       
-      // Toca o click toda vez que o botão mudar de estado (você clicando nele)
-      clickSound.currentTime = 0; // Zera o som para poder tocar rápido de novo
+      clickSound.currentTime = 0; 
       clickSound.play();
 
       if (this.checked) {
         
-        // Gato entra em alerta (Espera 0.5s)
         setTimeout(() => {
           
-          // Toca o miado exatamente quando a pata vai dar o bote!
           meowSound.currentTime = 0;
           meowSound.play();
           
-          // Patinha entra na tela
           catPaw.classList.add('atacar');
           
-          // Tempo para a pata chegar no interruptor (0.3s)
           setTimeout(() => {
             
-            // Desliga o interruptor sozinho!
             toggleBtn.checked = false; 
             
-            // Toca o click de novo, porque a patinha desligou o botão!
             clickSound.currentTime = 0;
             clickSound.play();
 
-            // Patinha recua para o esconderijo (Espera 0.2s)
             setTimeout(() => {
               catPaw.classList.remove('atacar');
             }, 200); 
