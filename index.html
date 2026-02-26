@@ -902,28 +902,58 @@
       background: var(--orange); /* Usa a mesma cor laranja dos seus botões */
     }
     
-    /* Estilo do botão Ver Mais (Mobile) */
-    #scrollDownBtn {
-      display: none; /* Escondido por padrão no PC */
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      text-align: center;
-      text-decoration: none;
-      color: var(--brown);
-      font-family: "filson-pro", sans-serif;
-      font-size: 11px;
-      letter-spacing: 2px;
-      font-weight: 700;
+    /* ✅ NOVO BLOCO MOBILE: CORRIGE POSIÇÃO E ESTÉTICA */
+    @media (max-width: 900px) {
+      #scrollDownBtn { 
+        /* 1. Trava de Posição (Para fugir da barra do celular e centralizar) */
+        display: flex !important; 
+        flex-direction: column !important; 
+        align-items: center !important; 
+        position: absolute !important;
+        bottom: 140px !important; /* Altura ideal para mobile */
+        left: 50% !important;
+        top: auto !important; 
+        transform: translateX(-50%) !important;
+        z-index: 20 !important;
+
+        /* 2. Devolvendo a Estética Lups Design */
+        text-decoration: none !important; 
+        color: var(--brown) !important; 
+        font-family: "filson-pro", sans-serif !important;
+        font-size: 11px !important;
+        letter-spacing: 2px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        width: 120px !important;
+        text-align: center !important;
+      }
+
+      /* Garante que a setinha também fique marrom */
+      #scrollDownBtn .arrow-down {
+        font-size: 20px !important;
+        margin-top: 4px !important;
+        color: var(--brown) !important;
+      }
+
+      /* Ajuste do botão de limpar para não bater no Ver Mais */
+      #clearBtn { 
+        right: 15px !important; 
+        bottom: 25px !important; 
+        z-index: 25 !important;
+        position: absolute !important;
+        padding: 6px 12px !important;
+        font-size: 10px !important;
+      }
     }
 
-    #scrollDownBtn .arrow-down {
-      font-size: 20px;
-      margin-top: 4px;
-      animation: bounce 2s infinite;
-    }
+  /* Deixa o botão de limpar no lugar certo */
+  #clearBtn { 
+    right: 15px !important; 
+    bottom: 25px !important; 
+    z-index: 10 !important;
+    position: absolute !important;
+  }
+
 
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
