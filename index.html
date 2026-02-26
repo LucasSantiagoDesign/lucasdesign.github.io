@@ -24,24 +24,6 @@
   --brown-light: #9e6a57;
 }
 
-/* Isso impede que o navegador aplique filtros de inversão */
-html, body {
-  color-scheme: light only !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  /* Se o celular estiver em modo escuro, forçamos o fundo a continuar creme */
-  body {
-    background-color: #FAF0E0 !important; /* Seu --cream */
-    color: #633C30 !important;            /* Seu --brown */
-  }
-  
-  /* Garante que os padrões de fundo não sumam ou mudem de cor */
-  .pattern-orange, .pattern-beige, .cta-contact-wrapper {
-    filter: none !important;
-  }
-}
-
     html { scroll-behavior: smooth; }
 
     body {
