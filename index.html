@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
   <title>Lucas Santiago — Designer & Editor de Vídeos</title>
 
   <link rel="preload" as="image" href="./img/Documento.webp">
@@ -15,12 +16,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream:   #FAF0E0;
-      --beige:   #CFB28C;
-      --orange:  #FBC580;
-      --brown:   #633C30;
-      --brown-light: #9e6a57;
-    }
+  color-scheme: light; /* Avisa ao navegador para não forçar o modo escuro */
+  --cream:   #FAF0E0;
+  --beige:   #CFB28C;
+  --orange:  #FBC580;
+  --brown:   #633C30;
+  --brown-light: #9e6a57;
+}
 
     html { scroll-behavior: smooth; }
 
