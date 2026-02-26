@@ -38,12 +38,14 @@
     html { scroll-behavior: smooth; }
 
     body {
-  font-family: "filson-pro", sans-serif; 
-  font-weight: 700;
-  background-color: #FAF0E0 !important; /* Forçamos o creme real aqui */
-  color: #633C30 !important; /* Forçamos o marrom real aqui */
-  overflow-x: hidden;
-}
+      font-family: "filson-pro", sans-serif; 
+      font-weight: 700;
+      /* Truque: Gradiente com a mesma cor engana o Modo Escuro */
+      background-image: linear-gradient(var(--cream), var(--cream)) !important;
+      background-color: transparent !important; 
+      color: var(--brown) !important; 
+      overflow-x: hidden;
+    }
 
     /* ── VÍDEOS ── */
     .meu-video {
@@ -80,10 +82,11 @@
 /* ── PATTERNS DE FUNDO ── */
 
 /* TOPO (Hero) */
-.pattern-orange {
-  position: relative;
-  background-color: var(--orange); /* Cor sólida carrega instantaneamente */
-}
+    .pattern-orange {
+      position: relative;
+      background-image: linear-gradient(var(--orange), var(--orange)) !important;
+      background-color: transparent !important;
+    }
 
 /* Criamos uma camada só para a imagem do topo */
 .pattern-orange::before {
@@ -99,12 +102,13 @@
 }
 
 /* PROJETOS (Meio) */
-.pattern-beige {
-  background-color: var(--beige);
-  background-image: url("./img/Documento2.webp");
-  background-size: cover;
-  background-position: center;
-}
+    .pattern-beige {
+      /* Colocamos a sua textura e a cor bege juntas no mesmo comando de imagem */
+      background-image: url("./img/Documento2.webp"), linear-gradient(var(--beige), var(--beige)) !important;
+      background-color: transparent !important;
+      background-size: cover;
+      background-position: center;
+    }
 
    /* ── NAV (Estrutura principal) ── */
     nav {
@@ -349,7 +353,8 @@
 
     /* ── MARQUEE ── */
     .marquee-wrap {
-      background: var(--brown);
+      background-image: linear-gradient(var(--brown), var(--brown)) !important;
+      background-color: transparent !important;
       padding: 16px 0;
       overflow: hidden;
       white-space: nowrap;
@@ -382,7 +387,8 @@
 
     /* ── ABOUT ── */
     #about {
-      background: var(--cream);
+      background-image: linear-gradient(var(--cream), var(--cream)) !important;
+      background-color: transparent !important;
       padding: 100px 40px;
     }
 
@@ -660,7 +666,8 @@
     /* ── ENVELOPE QUE JUNTA AS DUAS SEÇÕES ── */
     .cta-contact-wrapper {
       position: relative;
-      background: var(--cream);
+      background-image: linear-gradient(var(--cream), var(--cream)) !important;
+      background-color: transparent !important;
       overflow: hidden;
     }
 
@@ -832,11 +839,11 @@
     }
 
     footer {
-  background: var(--orange); /* MUDA O FUNDO PARA LARANJA */
-  padding: 40px 30px; /* Aumentei um pouquinho o padding vertical para ficar mais elegante */
-  text-align: center;
-  /* Removi a borda superior que tinha antes para ficar liso */
-}
+      background-image: linear-gradient(var(--orange), var(--orange)) !important;
+      background-color: transparent !important;
+      padding: 40px 30px; 
+      text-align: center;
+    }
 
 .footer-logo {
   display: inline-flex;
