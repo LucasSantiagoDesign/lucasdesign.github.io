@@ -16,7 +16,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-  color-scheme: light; /* Avisa ao navegador para não forçar o modo escuro */
+  color-scheme: light only; /* O 'only' é o segredo para navegadores teimosos */
   --cream:   #FAF0E0;
   --beige:   #CFB28C;
   --orange:  #FBC580;
@@ -27,12 +27,12 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "filson-pro", sans-serif; 
-      font-weight: 700;
-      background: var(--cream);
-      color: var(--brown);
-      overflow-x: hidden;
-    }
+  font-family: "filson-pro", sans-serif; 
+  font-weight: 700;
+  background-color: #FAF0E0 !important; /* Forçamos o creme real aqui */
+  color: #633C30 !important; /* Forçamos o marrom real aqui */
+  overflow-x: hidden;
+}
 
     /* ── VÍDEOS ── */
     .meu-video {
