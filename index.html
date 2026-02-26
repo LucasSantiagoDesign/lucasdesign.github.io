@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light only">
   <title>Lucas Santiago — Designer & Editor de Vídeos</title>
 
   <link rel="preload" as="image" href="./img/Documento.webp">
@@ -1063,37 +1063,147 @@
       right: 0px; 
     }
 
+    /* ── BOTÃO TEMA ESCURO (Canto Esquerdo) ── */
+    #darkModeToggle {
+      position: fixed;
+      bottom: 30px;
+      left: 30px; /* Fica no lado oposto do BackToTop */
+      width: 45px;
+      height: 45px;
+      background: var(--brown);
+      color: var(--orange);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(99, 60, 48, 0.3);
+    }
+
+    #darkModeToggle svg { width: 20px; height: 20px; }
+
+    #darkModeToggle:hover {
+      transform: translateY(-5px);
+      background: var(--brown-light);
+      color: var(--cream);
+    }
+
+    @media (max-width: 900px) {
+      #darkModeToggle {
+        bottom: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
     /* =========================================
-       🌙 TEMA ESCURO OFICIAL LUPS DESIGN 🌙
+       🌙 TEMA ESCURO MANUAL LUPS DESIGN 🌙
        ========================================= */
-    @media (prefers-color-scheme: dark) and (max-width: 900px) {
-      :root {
-        --cream:   #1A110C; 
-        --beige:   #2B1D16; 
-        --brown:   #FAF0E0; 
-      }
+    /* Quando ativarmos essa classe no body, as cores mudam em cascata! */
+    body.dark-theme {
+      --cream:   #1A110C; 
+      --beige:   #2B1D16; 
+      --brown:   #FAF0E0; 
+    }
 
-      .pattern-orange, footer {
-        background-color: var(--cream) !important;
-        background-image: none !important;
-        border-bottom: 2px solid var(--orange);
-      }
+    /* Ajustes finos para o Tema Escuro Manual */
+    body.dark-theme .pattern-orange, 
+    body.dark-theme footer {
+      background-color: var(--cream) !important;
+      background-image: none !important;
+      border-bottom: 2px solid var(--orange);
+    }
 
-      .pattern-orange::before { opacity: 0.10; }
+    body.dark-theme .pattern-orange::before { opacity: 0.10; }
 
-      .btn-mais, .btn-send, .btn-cta, .vid-play {
-        color: #1A110C !important;
-        -webkit-text-fill-color: #1A110C !important;
-      }
+    /* Garante a leitura dos botões */
+    body.dark-theme .btn-mais, 
+    body.dark-theme .btn-send, 
+    body.dark-theme .btn-cta, 
+    body.dark-theme .vid-play {
+      color: #1A110C !important;
+      -webkit-text-fill-color: #1A110C !important;
+    }
 
-      #clearBtn, .photo-label, #backToTop {
-        color: #1A110C !important;
-        -webkit-text-fill-color: #1A110C !important;
-      }
+    body.dark-theme #clearBtn, 
+    body.dark-theme .photo-label, 
+    body.dark-theme #backToTop,
+    body.dark-theme #darkModeToggle {
+      color: #1A110C !important;
+      -webkit-text-fill-color: #1A110C !important;
+    }
 
-      #cat-box { background-color: var(--beige) !important; }
-      .slider { background-color: var(--cream) !important; }
-      .slider:before { background-color: var(--brown) !important; }
+    body.dark-theme #cat-box { background-color: var(--beige) !important; }
+    body.dark-theme .slider { background-color: var(--cream) !important; }
+    body.dark-theme .slider:before { background-color: var(--brown) !important; }
+
+/* =========================================
+       🛠️ CORREÇÕES DE TEXTOS NO TEMA ESCURO 🛠️
+       ========================================= */
+
+    /* 1. Corrige o botão "ENTRE EM CONTATO" para o texto ficar claro */
+    body.dark-theme .btn-cta {
+      color: var(--brown) !important; /* No tema escuro, a variável --brown puxa o Creme! */
+      -webkit-text-fill-color: var(--brown) !important;
+    }
+
+    /* 2. Deixa o link do Email brilhante e legível */
+    body.dark-theme .contact-email {
+      color: var(--brown) !important;
+      opacity: 0.9 !important;
+    }
+
+    /* 3. Corrige os campos do Formulário (Bordas, Texto Digitado e Placeholders) */
+    body.dark-theme .contact-form input,
+    body.dark-theme .contact-form textarea {
+      color: var(--brown) !important; 
+      border-color: rgba(250, 240, 224, 0.3) !important; /* Borda em tom creme sutil */
+    }
+
+    body.dark-theme .contact-form input::placeholder,
+    body.dark-theme .contact-form textarea::placeholder { 
+      color: rgba(250, 240, 224, 0.5) !important; /* Textos de dica em creme claro */
+      -webkit-text-fill-color: rgba(250, 240, 224, 0.5) !important;
+    }
+
+/* =========================================
+       🛠️ CORREÇÃO FINAL: TÍTULOS E WHATSAPP 🛠️
+       ========================================= */
+
+    /* 1. Corrige a parte 2 dos títulos ("SOCIAL MEDIA" e "EDIÇÃO DE VÍDEO") */
+    body.dark-theme .section-title span {
+      color: var(--orange) !important; /* Usamos o Laranja para dar um destaque lindo no escuro! */
+      -webkit-text-fill-color: var(--orange) !important;
+    }
+
+    /* 2. Corrige o botão do WhatsApp (e o de Contato) para o texto ficar claro */
+    body.dark-theme .btn-send,
+    body.dark-theme .btn-cta {
+      color: var(--brown) !important; /* Lembre-se: no escuro, o --brown puxa a sua cor Creme clara */
+      -webkit-text-fill-color: var(--brown) !important;
+    }
+
+    /* =========================================
+       📸 TROCA INTELIGENTE DE IMAGENS 📸
+       ========================================= */
+
+    /* 1. Troca a Logo Principal (Topo) */
+    body.dark-theme .nav-logo img {
+      content: url("./img/LOGOCOMPLETABLACK.png");
+    }
+
+    /* 2. Troca a sua Foto (Sessão Sobre) */
+    body.dark-theme .photo-placeholder img {
+      content: url("./img/EupngBlack.png");
+    }
+
+    /* 3. Troca a Logo do Rodapé (Footer) */
+    body.dark-theme .footer-logo img {
+      content: url("./img/LOGOFICIALBLACK.png");
     }
 
   </style>
@@ -1291,6 +1401,10 @@
 <div id="cat-house">
   <img src="./img/Gemini_Generated_Image_u2e15ju2e15ju2e1.webp" id="cat-paw" alt="Pata de Gato">
 </div>
+
+<button id="darkModeToggle" title="Alternar Tema Escuro">
+  <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="currentColor"/></svg>
+</button>
 
 <button id="backToTop" title="Voltar ao topo">↑</button>
 
@@ -1503,6 +1617,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500); 
       }
     });
+  }
+});
+
+// ══════════════════════════════════════════
+// TEMA ESCURO MANUAL (TOGGLE)
+// ══════════════════════════════════════════
+const darkModeToggleBtn = document.getElementById('darkModeToggle');
+const pageBody = document.body;
+
+// Verifica se o cliente já tinha deixado no escuro na última visita
+if (localStorage.getItem('lups-theme') === 'dark') {
+  pageBody.classList.add('dark-theme');
+}
+
+// Ao clicar no botão da lua
+darkModeToggleBtn.addEventListener('click', () => {
+  pageBody.classList.toggle('dark-theme');
+  
+  // Salva a escolha no navegador do cliente
+  if (pageBody.classList.contains('dark-theme')) {
+    localStorage.setItem('lups-theme', 'dark');
+  } else {
+    localStorage.setItem('lups-theme', 'light');
   }
 });
 
