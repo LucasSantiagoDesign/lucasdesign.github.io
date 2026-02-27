@@ -1207,6 +1207,39 @@
       content: url("./img/LOGOFICIALBLACK.png");
     }
 
+/* =========================================
+       📝 INFORMAÇÕES DOS PROJETOS (CLIENTE/PERÍODO) 📝
+       ========================================= */
+    .project-info {
+      text-align: left;
+    }
+
+    .project-info p {
+      font-family: "filson-pro", sans-serif;
+      font-size: 15px;
+      /* 🔥 MUDANÇA: Usa a exata cor Creme do título "SOCIAL MEDIA" */
+      color: var(--cream); 
+      -webkit-text-fill-color: var(--cream);
+      margin-bottom: 6px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .project-info p strong {
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 13px;
+      opacity: 0.8; /* Aumentei um fio de opacidade para garantir a leitura no creme */
+      margin-right: 4px;
+    }
+
+    /* No Tema Escuro, a variável que guarda a cor Creme é a --brown! */
+    body.dark-theme .project-info p {
+      color: var(--brown) !important; 
+      -webkit-text-fill-color: var(--brown) !important;
+    }
+
   </style>
 </head>
 <body>
@@ -1333,6 +1366,11 @@
       </div>
     </div>
 
+    <div class="project-info reveal" style="margin-top: 20px; margin-bottom: 40px;">
+      <p><strong>CLIENTE:</strong> 50/50 x EPIC GAMES x DM Eventos</p>
+      <p><strong>PERÍODO:</strong> 05/2025 à 10/2025</p>
+    </div>
+
     <div class="reveal">
       <p class="section-label">Portfolio</p>
       <h2 class="section-title">PROJETOS — <span>EDIÇÃO DE VÍDEO</span></h2>
@@ -1353,6 +1391,16 @@
           <p class="vid-card-title">AION ASSESSORIA</p>
         </div>
       </div>
+      
+    </div>
+
+    <div class="reveal" style="text-align: center; margin-top: 60px;">
+      <a href="https://www.behance.net/lupsdesign" target="_blank" class="btn-mais">
+        VER MAIS NO BEHANCE
+      </a>
+    </div>
+    </div> 
+</section>
       
     </div>
   </div> 
@@ -1674,8 +1722,12 @@ const solIcon = '<svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24
 // Verifica se o cliente já tinha deixado no escuro na última visita
 if (localStorage.getItem('lups-theme') === 'dark') {
   pageBody.classList.add('dark-theme');
-  // Se começar escuro, já coloca o ícone de Sol
+  
   if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = solIcon;
+  
+  // Avisa a caneta do canvas para ficar clara logo de cara!
+  if (window.atualizarDesenho) window.atualizarDesenho();
+  
 } else {
   // Se começar claro, coloca o ícone de Lua
   if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = luaIcon;
@@ -1686,7 +1738,7 @@ if (darkModeToggleBtn) {
   darkModeToggleBtn.addEventListener('click', () => {
     pageBody.classList.toggle('dark-theme');
     
-    // 🔥 A MÁGICA: Chamamos a função para atualizar o desenho instantaneamente
+    // Chamamos a função para atualizar o desenho instantaneamente
     if (window.atualizarDesenho) window.atualizarDesenho(); 
     
     // Troca o ícone e salva a preferência
@@ -1698,20 +1750,6 @@ if (darkModeToggleBtn) {
       darkModeToggleBtn.innerHTML = luaIcon;
     }
   });
-}
-
-// Verifica se o cliente já tinha deixado no escuro na última visita
-if (localStorage.getItem('lups-theme') === 'dark') {
-  pageBody.classList.add('dark-theme');
-  // Se começar escuro, já coloca o ícone de Sol
-  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = solIcon;
-  
-  // 🔥 A CORREÇÃO: Avisa a caneta do canvas para ficar clara logo de cara!
-  if (window.atualizarDesenho) window.atualizarDesenho();
-  
-} else {
-  // Se começar claro, coloca o ícone de Lua
-  if (darkModeToggleBtn) darkModeToggleBtn.innerHTML = luaIcon;
 }
 
 </script>
