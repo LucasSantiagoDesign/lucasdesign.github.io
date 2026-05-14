@@ -890,33 +890,78 @@
     
     /* ✅ NOVO BLOCO MOBILE: CORRIGE POSIÇÃO E ESTÉTICA */
     @media (max-width: 900px) {
-      #scrollDownBtn { 
-        display: flex !important; 
-        flex-direction: column !important; 
-        align-items: center !important; 
-        position: absolute !important;
-        bottom: 140px !important; 
-        left: 50% !important;
-        top: auto !important; 
-        transform: translateX(-50%) !important;
-        z-index: 20 !important;
+      #scrollDownBtn {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  
+  /* Deixando ele "gordinho" */
+  background: var(--brown);
+  padding: 18px 45px;
+  border-radius: 50px;
+  
+  /* Tipografia maior e cor */
+  color: var(--orange) !important;
+  font-family: "filson-pro", sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  
+  /* Efeito de sombra e transição suave */
+  box-shadow: 0 10px 25px rgba(99, 60, 48, 0.2);
+  transition: all 0.3s ease;
+}
 
-        text-decoration: none !important; 
-        color: var(--brown) !important; 
-        font-family: "filson-pro", sans-serif !important;
-        font-size: 11px !important;
-        letter-spacing: 2px !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        width: 120px !important;
-        text-align: center !important;
-      }
+/* A setinha com animação pulando */
+#scrollDownBtn .arrow-down {
+  font-size: 24px;
+  margin-top: 6px;
+  line-height: 1;
+  color: var(--orange) !important;
+  animation: bounce 2s infinite; /* Aproveitando sua animação existente */
+  transition: all 0.3s ease;
+}
 
-      #scrollDownBtn .arrow-down {
-        font-size: 20px !important;
-        margin-top: 4px !important;
-        color: var(--brown) !important;
-      }
+/* Efeito ao passar o mouse */
+#scrollDownBtn:hover {
+  transform: translateX(-50%) translateY(-5px);
+  background: var(--orange);
+  color: var(--brown) !important;
+  box-shadow: 0 15px 35px rgba(99, 60, 48, 0.4);
+}
+
+#scrollDownBtn:hover .arrow-down {
+  color: var(--brown) !important;
+}
+
+/* ── REGRAS PARA O TEMA ESCURO ── */
+body.dark-theme #scrollDownBtn {
+  background: var(--cream);
+  color: var(--brown) !important;
+}
+body.dark-theme #scrollDownBtn .arrow-down {
+  color: var(--brown) !important;
+}
+body.dark-theme #scrollDownBtn:hover {
+  background: var(--orange);
+}
+
+/* ── POSIÇÃO NO CELULAR ── */
+@media (max-width: 900px) {
+  #scrollDownBtn {
+    bottom: 140px; /* Mantém ele acima para não colar nos elementos inferiores no mobile */
+    padding: 16px 36px; /* Fica pouca coisa menor na tela pequena */
+  }
+}
 
       #clearBtn { 
         right: 15px !important; 
